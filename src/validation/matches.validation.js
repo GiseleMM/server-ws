@@ -5,9 +5,10 @@ export const MATCH_STATUS = {
     LIVE: 'live',
     FINISHED: 'finished'
 }
-export const listMatchQuerySchema = z.object({
-    limit: z.coerce.number().int().positive(),
+export const listMatchesQuerySchema = z.object({
+    limit: z.coerce.number().int().positive().optional(), // Hacer que limit sea opcional
 });
+
 export const matchIdParamSchema = z.object({
     id: z.coerce.number().int().positive(),
 });
