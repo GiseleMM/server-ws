@@ -15,7 +15,7 @@ matchRouter.get("/", async (req, res) => {
     try {
         const parsed = listMatchesQuerySchema.safeParse(req.query);
         console.log(parsed);
-        if (!parsed.success) return res.status(400).json({ error: "Invalid payload", details: JSON.stringify(parsed.error) })
+        if (!parsed.success) return res.status(400).json({ error: "Invalid payload", details: parsed.error.issues })
 
         const limit = Math.min(parsed.data.limit ?? 50, MAX_LIMIT);
         console.log("limit", limit);
