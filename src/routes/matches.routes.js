@@ -1,15 +1,37 @@
 
 import { Router } from "express";
 import { getMatchStatus } from "../utils/matchStatus.js"
-import { createMatchSchema } from "../validation/matches.validation.js";
+import { createMatchSchema, listMatchesQuerySchema } from "../validation/matches.validation.js";
 import { Matches } from "../db/schema.js"//after dbconnection--->importante
 
 
 export const matchRouter = Router();
+const MAX_LIMIT = 100;
 
-matchRouter.get("/", (req, res) => {
+matchRouter.get("/", async (req, res) => {
     console.log("cointroller get matches");
-    res.status(200).json({ message: "maches get" });
+
+
+    try {
+        const parsed = listMatchesQuerySchema.safeParse(req.query);
+        console.log(parsed);
+        if (!parsed.success) return res.status(400).json({ error: "Invalid payload", details: JSON.stringify(parsed.error) })
+
+        const limit = Math.min(parsed.data.limit ?? 50, MAX_LIMIT);
+        console.log("limit", limit);
+
+        // Ahora pasamos limit como un número directamente
+        const allMatches = await Matches.findAll({
+            order: [['createdAt', 'DESC']],
+            limit: limit  // Aquí pasamos el número directamente, no un objeto
+        });
+        return res.status(200).json({ message: "maches get", details: allMatches });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "maches get all failed", detalies: error.message });
+
+    }
 });
 matchRouter.post("/", async (req, res) => {
     console.log("controller post matches");
