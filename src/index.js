@@ -1,15 +1,30 @@
 import express from "express";
+import http from "node:http";
+import { attachWebSocketServer } from "./ws/server.js"
+
 import { dbConnection } from "./db/db.js";
 import "./db/schema.js";//after dbconnection--->importante
 
 import { matchRouter } from "./routes/matches.routes.js";
-const app=express();
-const port=8888;
+const app = express();
+const port = Number(process.env.PORT || 8888);
+const host = process.env.HOST || '0.0.0.0';
+
 await dbConnection();
 app.use(express.json());
-app.get("/",(req,res)=>{
-    return res.json({date:new Date().toLocaleDateString,msg:"live api"});
+app.get("/", (req, res) => {
+    return res.json({ date: new Date().toLocaleDateString, msg: "live api" });
 });
-app.use("/api/v1/matches",matchRouter);
 
-app.listen(port,()=>console.log(`app run on http://localhost:${port}`));
+app.use("/api/v1/matches", matchRouter);
+
+const server = http.createServer(app);
+const { broadcastMatchCreated } = attachWebSocketServer(server);
+app.locals.broadcastMatchCreated = broadcastMatchCreated;
+server.listen(port, host, () => {
+
+    const baseUrl = host === '0.0.0.0' ? `http://localhost:${port}` : `http://${host}:${port}`;
+    console.log(` Server is running on ${baseUrl}`);
+    console.log(`Web socket server is running on ${baseUrl.replace("http", "ws")}/ws`);
+
+});

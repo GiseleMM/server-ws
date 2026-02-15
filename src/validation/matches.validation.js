@@ -5,15 +5,16 @@ export const MATCH_STATUS = {
     LIVE: 'live',
     FINISHED: 'finished'
 }
-export const listMatchQuerySchema = z.object({
-    limit: z.coerce.number().int().positive(),
+export const listMatchesQuerySchema = z.object({
+    limit: z.coerce.number().int().positive().optional(), // Hacer que limit sea opcional
 });
+
 export const matchIdParamSchema = z.object({
     id: z.coerce.number().int().positive(),
 });
-const isoDateString = z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid ISO dtae strring"
-});
+
+const isoDateString=z.iso.datetime();
+
 export const createMatchSchema = z.object({
     sport: z.string().min(1),
     homeTeam: z.string().min(1),
