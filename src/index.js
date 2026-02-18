@@ -9,7 +9,7 @@ import { dbConnection } from "./db/db.js";
 import "./db/schema.js";//after dbconnection--->importante
 
 import { matchRouter } from "./routes/matches.routes.js";
-
+import { commentaryRouter} from "./routes/commentary.routes.js";
 
 await dbConnection();
 
@@ -30,6 +30,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/matches", matchRouter);
+app.use("/api/v1/matches/:id/commentary", commentaryRouter);
+
 
 const server = http.createServer(app);
 const { broadcastMatchCreated } = attachWebSocketServer(server);
