@@ -2,8 +2,7 @@
 import { Router } from "express";
 import { getMatchStatus } from "../utils/matchStatus.js"
 import { createMatchSchema, listMatchesQuerySchema } from "../validation/matches.validation.js";
-import { Matches } from "../db/schema.js"//after dbconnection--->importante
-
+import { Matches } from "../db/schema.js";
 
 export const matchRouter = Router();
 const MAX_LIMIT = 100;
