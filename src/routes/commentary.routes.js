@@ -52,10 +52,13 @@ commentaryRouter.post("/", async (req, res) => {
         const { minutes, ...rest } = bodyResult.data;
         const result = await Commentary.create({
             matchId: paramsResult.data.id,
-            minute:minutes,
+            minute: minutes,
             ...rest
         })
         const newCommentary = result.dataValues;
+        if (res.app.locals.broadcastCommentary) {
+            res.app.locals.broadcastCommentary(newCommentary.matchId, newCommentary);
+        }
         console.log("new commentary", newCommentary);
         return res.status(201).json({ data: newCommentary });
 
