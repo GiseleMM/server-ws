@@ -36,7 +36,7 @@ app.use("/api/v1/matches/:id/commentary", commentaryRouter);
 const server = http.createServer(app);
 const { broadcastMatchCreated, broadcastCommentary } = attachWebSocketServer(server);
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
-app.locals.broadcastCommentary = broadcastCommentary;
+app.locals.broadcastCommentary = broadcastCommentary; 
 
 server.listen(port, host, () => {
 

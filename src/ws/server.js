@@ -63,13 +63,18 @@ function broadcastToAll(wss, payload) {
 
 function handleMessage(socket, data) {
     let message;
+
+    console.log(data.toString());
     try {
         message = JSON.parse(data.toString());
-    } catch {
+    } catch (error) {
 
+        console.log(error);
         sendJson(socket, { type: "error", message: "Invalid JSON" });
         return;
     }
+
+    // {"type":"subscribe","matchId":1}
     if (message?.type === "subscribe" && Number.isInteger(message.matchId)) {
         subscribe(message.matchId, socket);
         socket.subscriptions.add(message.matchId);

@@ -19,11 +19,11 @@ POST http://localhost:8888/api/v1/matches/1/commentary HTTP/1.1
 Content-Type: application/json
 
 {
-  "minutes":10,
+  "minute":20,
   "sequence":100,
   "period":"1° tiempo",
   "evenType":"goal",
-  "actor":"Merentiel",
+  "actor":"Cavani",
   "team":"Boca Junior",
   "message":"GOOOOALLL the BOCAAAAA!!!!",
   "metadata":{"assist":"Zenon"},
@@ -33,3 +33,5 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8888/api/v1/matches/1/commentary HTTP/1.1
+
+
