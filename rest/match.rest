@@ -13,3 +13,25 @@ Content-Type: application/json
   "endTime": "2026-01-01T13:45:00.000Z",
   "homeScore": 3 
 }
+
+###
+POST http://localhost:8888/api/v1/matches/1/commentary HTTP/1.1
+Content-Type: application/json
+
+{
+  "minute":20,
+  "sequence":100,
+  "period":"1° tiempo",
+  "evenType":"goal",
+  "actor":"Cavani",
+  "team":"Boca Junior",
+  "message":"GOOOOALLL the BOCAAAAA!!!!",
+  "metadata":{"assist":"Zenon"},
+  "tags":["goal"]
+
+}
+
+###
+GET http://localhost:8888/api/v1/matches/1/commentary HTTP/1.1
+
+
